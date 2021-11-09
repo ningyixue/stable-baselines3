@@ -117,7 +117,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self.device,
             gamma=self.gamma,
             gae_lambda=self.gae_lambda,
-            use_n_steps = use_n_steps,
+            use_n_steps = self.use_n_steps,
             n_envs=self.n_envs,
         )
         self.policy = self.policy_class(  # pytype:disable=not-instantiable
