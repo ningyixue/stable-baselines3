@@ -59,7 +59,7 @@ class A2C(OnPolicyAlgorithm):
         n_steps: int = 5,
         gamma: float = 0.99,
         gae_lambda: float = 1.0,
-        use_n_steps = bool = False,
+        use_n_steps: bool = False,
         ent_coef: float = 0.0,
         vf_coef: float = 0.5,
         max_grad_norm: float = 0.5,
