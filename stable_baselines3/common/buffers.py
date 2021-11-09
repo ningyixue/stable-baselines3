@@ -323,7 +323,7 @@ class RolloutBuffer(BaseBuffer):
         gae_lambda: float = 1,
         gamma: float = 0.99,
         n_envs: int = 1,
-        n_steps: bool = False,
+        use_n_steps: bool = False,
     ):
 
         super(RolloutBuffer, self).__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
@@ -332,7 +332,7 @@ class RolloutBuffer(BaseBuffer):
         self.observations, self.actions, self.rewards, self.advantages = None, None, None, None
         self.returns, self.episode_starts, self.values, self.log_probs = None, None, None, None
         self.generator_ready = False
-        self.n_steps = n_steps
+        self.use_n_steps = use_n_steps
         self.reset()
         
 
@@ -371,7 +371,7 @@ class RolloutBuffer(BaseBuffer):
         """
         # Convert to numpy
         last_values = last_values.clone().cpu().numpy().flatten()
-        n_steps = self.n_steps
+        use_n_steps = self.use_n_steps
 
         last_gae_lam = 0
         R = last_values
@@ -382,7 +382,7 @@ class RolloutBuffer(BaseBuffer):
             else:
                 next_non_terminal = 1.0 - self.episode_starts[step + 1]
                 next_values = self.values[step + 1]
-            if n_steps:
+            if use_n_steps:
                 R = self.rewards[step] + self.gamma * R * next_non_terminal
                 self.advantages[step] = R - self.values[step]
             else:
@@ -646,7 +646,7 @@ class DictRolloutBuffer(RolloutBuffer):
         gae_lambda: float = 1,
         gamma: float = 0.99,
         n_envs: int = 1,
-        n_steps: bool = False,
+        use_n_steps: bool = False,
     ):
 
         super(RolloutBuffer, self).__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
@@ -658,7 +658,7 @@ class DictRolloutBuffer(RolloutBuffer):
         self.observations, self.actions, self.rewards, self.advantages = None, None, None, None
         self.returns, self.episode_starts, self.values, self.log_probs = None, None, None, None
         self.generator_ready = False
-        self.n_steps = n_steps
+        self.use_n_steps = use_n_steps
         self.reset()
 
 
